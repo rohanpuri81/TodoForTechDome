@@ -1,23 +1,17 @@
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+import {View, Text, StyleSheet, StatusBar, Image, Platform} from 'react-native';
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import {useSelector, useDispatch} from 'react-redux';
-import SplashLogo from './SplashLogo';
+import {rh, rw} from '../../components/commonFunctions ';
 // import {ScreenConstants} from '../../Navigation/NavigationConstants';
 import {useNavigation} from '@react-navigation/native';
 import {StackActions} from '@react-navigation/native';
 import {useEffect} from 'react';
+
 // import {fetchUserDetails} from '../../redux/userSlice';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 const SplashScreen = ({handleNextPress}) => {
@@ -35,14 +29,6 @@ const SplashScreen = ({handleNextPress}) => {
     title1: languageRedux == 'ENGLISH' ? 'Namaste' : 'नमस्ते',
 
     headerLineHeight: languageRedux == 'ENGLISH' ? 4.75 : 4.7,
-    subHeading1:
-      languageRedux == 'ENGLISH'
-        ? 'Where Ancient Wisdom Meets'
-        : 'जहाँ प्राचीन ज्ञान आपके',
-    subHeading2:
-      languageRedux == 'ENGLISH'
-        ? 'Your Modern Path.'
-        : 'आधुनिक पथ से मिलता है।',
 
     deafult:
       languageRedux == 'ENGLISH' ? '(System default)' : '(सिस्टम डिफ़ॉल्ट)',
@@ -84,22 +70,12 @@ const SplashScreen = ({handleNextPress}) => {
           alignItems: 'center',
           gap: responsiveHeight(3.75),
         }}>
-        <SplashLogo />
+        <Image style={styles.Img} source={require('../../Images/loggo.png')} />
         <View style={{flexDirection: 'row'}}>
-          <Text style={{...fontStyle.h1, color: theme.accent1}}>SH</Text>
-          <Text style={{...fontStyle.h1, color: theme.accent3}}>LO</Text>
-          <Text style={{...fontStyle.h1, color: theme.accent4}}>KA</Text>
+          <Text style={{...fontStyle.h1, color: theme.accent1}}>
+            TODO for Techdome
+          </Text>
         </View>
-        <Text
-          style={{
-            ...fontStyle.bodyMedium1,
-            textAlign: 'center',
-            color: theme.secondaryColor,
-          }}>
-          {LangText.subHeading1}
-          {'\n'}
-          {LangText.subHeading2}
-        </Text>
       </View>
     </SafeAreaView>
   );
@@ -107,4 +83,12 @@ const SplashScreen = ({handleNextPress}) => {
 
 export default SplashScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  Img: {
+    width: rw(160),
+    height: rw(160),
+    alignSelf: 'center',
+
+    borderRadius: rh(50),
+  },
+});

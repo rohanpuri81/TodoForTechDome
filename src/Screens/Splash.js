@@ -1,16 +1,14 @@
 import {
   View,
-  Text,
   StyleSheet,
   StatusBar,
   Image,
   ActivityIndicator,
-  Button,
-  Pressable,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import {StackActions} from '@react-navigation/native';
 
 const Splash = () => {
   const navigation = useNavigation();
@@ -22,9 +20,9 @@ const Splash = () => {
         })
         .then(res => {
           if (Array.isArray(res) && res[0].name) {
-            navigation.navigate('Home');
+            navigation.dispatch(StackActions.replace('Home'));
           } else {
-            navigation.navigate('Onboarding');
+            navigation.dispatch(StackActions.replace('Onboarding'));
           }
         });
     }, 3000);
@@ -37,24 +35,8 @@ const Splash = () => {
         backgroundColor="#DE2821"
         translucent={true}
       />
-      <Image style={style.Img} source={require('../Images/playstore.png')} />
+      <Image style={style.Img} source={require('../Images/loggo.png')} />
       <ActivityIndicator size={'large'} />
-      <Pressable
-        onPress={() => {
-          AsyncStorage.getItem('loggedUser')
-            .then(res => {
-              return JSON.parse(res);
-            })
-            .then(res => {
-              if (Array.isArray(res) && res[0].name) {
-                navigation.navigate('Home');
-              } else {
-                navigation.navigate('Splash2');
-              }
-            });
-        }}>
-        <Text style={style.txt}>START</Text>
-      </Pressable>
     </View>
   );
 };
@@ -71,13 +53,5 @@ const style = StyleSheet.create({
     width: 200,
     height: 200,
     marginBottom: 120,
-  },
-  txt: {
-    fontSize: 30,
-    marginTop: 80,
-    backgroundColor: 'green',
-    color: 'white',
-    padding: 12,
-    borderRadius: 5,
   },
 });

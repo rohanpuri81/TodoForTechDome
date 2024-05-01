@@ -50,7 +50,7 @@ const OnboardingTheme = ({handleNextPress}) => {
     autoBtnText: languageRedux == 'ENGLISH' ? 'Auto' : 'ऑटो',
     darkBtnText: languageRedux == 'ENGLISH' ? 'Dark' : 'डार्क',
     lightBtnText: languageRedux == 'ENGLISH' ? 'Light' : 'लाइट',
-    skip: languageRedux == 'ENGLISH' ? 'Skip' : 'छोड़ दें',
+
     paddingTop: Platform.OS == 'ios' ? 2 : 4,
   };
   const tgBg = colorScheme == 'light' ? '#F9F9F9' : '#172B42';
@@ -88,22 +88,6 @@ const OnboardingTheme = ({handleNextPress}) => {
           paddingHorizontal: responsiveWidth(5.555),
           backgroundColor: theme.primaryBgColor,
         }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.dispatch(StackActions.replace("HOME"));
-          }}>
-          <Text
-            style={{
-              color: theme.textLayer2,
-              textAlign: 'right',
-              paddingBottom: responsiveHeight(2.6),
-              fontFamily: LangText.fontFamily,
-              fontWeight: 500,
-              textDecorationLine: 'underline',
-            }}>
-            {LangText.skip}
-          </Text>
-        </TouchableOpacity>
         <Text
           style={[
             {

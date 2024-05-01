@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Dimensions, Platform} from 'react-native';
 import Swiper from 'react-native-swiper';
 import Onboarding from './Onboarding';
-// import OnBoarding2 from './OnBoarding2';
+import OnBoarding2 from './OnBoarding2';
 import OnboardingTheme from './OnboardingTheme';
 import {useSelector} from 'react-redux';
 import SplashScreen from './SplashScreen';
@@ -17,7 +17,7 @@ const OnboardingCarousel = () => {
 
   const windowHeight = Dimensions.get('window').height;
   const crStyle = {
-    positionIosBottom: Platform.OS == 'ios' && windowHeight >= 852 ? 12.6 : 10,
+    positionIosBottom: windowHeight >= 852 ? 12.6 : 10,
     positionAndroidBottom:
       Platform.OS == 'android' && windowHeight >= 747 ? 16 : 10,
   };
@@ -78,6 +78,9 @@ const OnboardingCarousel = () => {
       {/* First Onboarding Theme selection screen  .*/}
       <View>
         <OnboardingTheme handleNextPress={handleNextPress} />
+      </View>
+      <View>
+        <OnBoarding2 handleNextPress={handleNextPress} />
       </View>
     </Swiper>
   );
