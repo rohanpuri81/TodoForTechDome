@@ -48,7 +48,7 @@ const Home = props => {
 
   useEffect(() => {
     isRefresh ? getData() : null;
-  }, []);
+  }, [isRefresh]);
   const isExpired = expiryDate => {
     const now = new Date();
     const expiry = new Date(expiryDate);

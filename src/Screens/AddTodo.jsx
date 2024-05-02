@@ -39,7 +39,7 @@ const AddTodo = () => {
           setDescription('');
           AsyncStorage.setItem('users', JSON.stringify(users));
           setTimeout(() => {
-            navigation.navigate('Home', {isRefresh: true});
+            navigation.navigate('Home', {isRefresh: Math.random()});
           }, 1800);
         }
       })
