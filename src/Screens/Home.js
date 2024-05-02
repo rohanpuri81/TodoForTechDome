@@ -6,19 +6,22 @@ import {
   TouchableOpacity,
   StatusBar,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Btn from '../components/Btn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {useRoute} from '@react-navigation/native';
-
+import ToggleSwitch from 'toggle-switch-react-native';
+import {setLanguageToEnglish, setLanguageToHindi} from '../redux/LanguageSlice';
 import {rh, rw} from '../components/commonFunctions ';
 
 const Home = props => {
   const [name, setName] = useState('User');
   const route = useRoute();
+  const dispatch = useDispatch();
   const isRefresh = route?.params?.isRefresh;
   const EditRefresh = route?.params?.EditRefresh;
   const [userEmail, setUserEmail] = useState('User');
@@ -26,6 +29,7 @@ const Home = props => {
   const navigation = useNavigation();
   const theme = useSelector(state => state.theme);
   const languageRedux = useSelector(state => state.language.language);
+  const [languageSwitch, setLanguageSwitch] = useState(false);
 
   const getData = async () => {
     AsyncStorage.getItem('users')
@@ -112,9 +116,75 @@ const Home = props => {
   }, []);
 
   return (
-    <View style={style.main}>
+    <SafeAreaView style={style.main}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingRight: rw(12),
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: rw(10),
+            alignItems: 'center',
+            marginTop: rh(8),
+            marginLeft: rw(12),
+          }}>
+          <Text>{languageRedux == 'ENGLISH' ? 'EN' : 'अंग्रेज़ी'}</Text>
+          <ToggleSwitch
+            isOn={languageSwitch}
+            onColor="green"
+            offColor="grey"
+            label=""
+            labelStyle={{color: 'black', fontWeight: '900'}}
+            size="medium"
+            onToggle={isOn => {
+              setLanguageSwitch(isOn);
+              if (isOn == true) {
+                dispatch(setLanguageToHindi());
+              } else {
+                dispatch(setLanguageToEnglish());
+              }
+              console.log(languageRedux);
+            }}
+          />
+          <Text>{languageRedux == 'ENGLISH' ? 'HIN' : 'हिंदी'}</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: rw(10),
+            alignItems: 'center',
+            marginTop: rh(8),
+            marginLeft: rw(12),
+          }}>
+          <Text>{languageRedux == 'ENGLISH' ? 'EN' : 'अंग्रेज़ी'}</Text>
+          <ToggleSwitch
+            isOn={languageSwitch}
+            onColor="green"
+            offColor="grey"
+            label=""
+            labelStyle={{color: 'black', fontWeight: '900'}}
+            size="medium"
+            onToggle={isOn => {
+              setLanguageSwitch(isOn);
+              if (isOn == true) {
+                dispatch(setLanguageToHindi());
+              } else {
+                dispatch(setLanguageToEnglish());
+              }
+              console.log(languageRedux);
+            }}
+          />
+          <Text>{languageRedux == 'ENGLISH' ? 'HIN' : 'हिंदी'}</Text>
+        </View>
+      </View>
+
       <View style={style.HeaderView}>
-        <Text style={style.txt}>Hello, {name}</Text>
+        <Text style={style.txt}>
+          {languageRedux == 'ENGLISH' ? 'Hello' : 'नमस्ते'}, {name}
+        </Text>
         <TouchableOpacity
           onPress={() => {
             let k = 'k';
@@ -137,7 +207,7 @@ const Home = props => {
             onPress={() =>
               navigation.navigate('AddTodo', {userEmail: userEmail})
             }
-            title={'Add Todo'}
+            title={languageRedux == 'ENGLISH' ? 'Add Todo' : 'टोडो जोड़ें'}
             width="88%"
             color={theme.textColor == 'white' ? 'black' : 'white'}
             bgColor={theme.secondaryColor}
@@ -168,7 +238,10 @@ const Home = props => {
                 <Text style={[style.h2, {color: theme.textColor}]}>
                   {ele?.desc}
                 </Text>
-                <Text>Expiry : {ele?.expiry}</Text>
+                <Text>
+                  {languageRedux == 'ENGLISH' ? 'Expiry' : 'समाप्ति'} :{' '}
+                  {ele?.expiry}
+                </Text>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -186,7 +259,7 @@ const Home = props => {
                         userEmail: userEmail,
                       });
                     }}
-                    title={'Edit'}
+                    title={languageRedux == 'ENGLISH' ? 'Edit' : 'संपादित करें'}
                     width="28%"
                     color={theme.textColor == 'white' ? 'black' : 'white'}
                     bgColor={theme.secondaryColor}
@@ -197,7 +270,7 @@ const Home = props => {
                     onPress={() => {
                       deleteTodo(i);
                     }}
-                    title={'Delete'}
+                    title={languageRedux == 'ENGLISH' ? 'Delete' : 'हटाएं'}
                     width="28%"
                     color={theme.textColor == 'white' ? 'black' : 'white'}
                     bgColor={theme.secondaryColor}
@@ -208,7 +281,15 @@ const Home = props => {
                     onPress={() => {
                       completeTodo(i);
                     }}
-                    title={ele?.isCompleted ? 'UnComplete' : 'Complete'}
+                    title={
+                      ele?.isCompleted
+                        ? languageRedux == 'ENGLISH'
+                          ? 'UnComplete'
+                          : 'अपूर्ण करें'
+                        : languageRedux == 'ENGLISH'
+                        ? 'Complete'
+                        : 'पूर्ण करें'
+                    }
                     width="28%"
                     color={theme.textColor == 'white' ? 'black' : 'white'}
                     bgColor={theme.secondaryColor}
@@ -221,7 +302,7 @@ const Home = props => {
           })}
         </ScrollView>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -248,7 +329,7 @@ const style = StyleSheet.create({
     color: 'black',
   },
   HeaderView: {
-    marginTop: rh(30),
+    marginTop: rh(14),
     height: rh(70),
     width: '100%',
     justifyContent: 'space-between',

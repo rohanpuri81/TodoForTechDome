@@ -14,6 +14,7 @@ const EditTodo = () => {
   const theme = useSelector(state => state.theme);
   const navigation = useNavigation();
   const route = useRoute();
+  const languageRedux = useSelector(state => state.language.language);
   const {tit, desc, index, expiry, isCompleted, userEmail} = route.params;
 
   // Set initial data
@@ -72,13 +73,13 @@ const EditTodo = () => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Title"
+        placeholder={languageRedux == 'ENGLISH' ? 'Title' : 'शीर्षक'}
         value={data.title}
         onChangeText={text => setData({...data, title: text})}
       />
       <TextInput
         style={styles.input}
-        placeholder="Description"
+        placeholder={languageRedux == 'ENGLISH' ? 'Description' : 'विवरण'}
         value={data.desc}
         onChangeText={text => setData({...data, desc: text})}
       />
@@ -94,14 +95,18 @@ const EditTodo = () => {
       </View>
       <Btn
         onPress={() => setShowDatePicker(true)}
-        title={'Select Expiry Date'}
+        title={
+          languageRedux == 'ENGLISH'
+            ? 'Select Expiry Date'
+            : 'समाप्ति तिथि का चयन करें'
+        }
         width="80%"
         color={theme.textColor == 'white' ? 'black' : 'white'}
         bgColor={theme.secondaryColor}
       />
       <Btn
         onPress={() => saveTodo()}
-        title={'Save Todo'}
+        title={languageRedux == 'ENGLISH' ? 'Save Todo' : 'टोडो सहेजें'}
         color={theme.textColor == 'white' ? 'black' : 'white'}
         bgColor={theme.secondaryColor}
       />

@@ -58,13 +58,13 @@ const AddTodo = () => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Title"
+        placeholder={languageRedux == 'ENGLISH' ? 'Title' : 'शीर्षक'}
         value={title}
         onChangeText={text => setTitle(text)}
       />
       <TextInput
         style={styles.input}
-        placeholder="Description"
+        placeholder={languageRedux == 'ENGLISH' ? 'Description' : 'विवरण'}
         value={description}
         onChangeText={text => setDescription(text)}
       />
@@ -80,14 +80,18 @@ const AddTodo = () => {
       </View>
       <Btn
         onPress={() => setShowDatePicker(true)}
-        title={'Select Expiry Date'}
+        title={
+          languageRedux == 'ENGLISH'
+            ? 'Select Expiry Date'
+            : 'समाप्ति तिथि का चयन करें'
+        }
         width="80%"
         color={theme.textColor == 'white' ? 'black' : 'white'}
         bgColor={theme.secondaryColor}
       />
       <Btn
         onPress={() => AddTodo()}
-        title={'Save Todo'}
+        title={languageRedux == 'ENGLISH' ? 'Save Todo' : 'टोडो सहेजें'}
         // width="42%"
         color={theme.textColor == 'white' ? 'black' : 'white'}
         bgColor={theme.secondaryColor}
