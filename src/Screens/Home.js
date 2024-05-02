@@ -4,18 +4,22 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  TextInput,
+  StatusBar,
+  ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Filters from '../components/Filters';
-import Recipies from '../components/Recipies';
+import Btn from '../components/Btn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {rh, rw} from '../components/commonFunctions ';
 
 const Home = props => {
-  const [dinner, setDinner] = useState([]);
-  const [filters, setFilters] = useState([]);
-  const [currFilter, setCurrFilter] = useState('Vegetarian');
   const [name, setName] = useState('User');
+  const navigation = useNavigation();
+  const theme = useSelector(state => state.theme);
+  const languageRedux = useSelector(state => state.language.language);
+
   useEffect(() => {
     AsyncStorage.getItem('loggedUser').then(p => {
       let user = JSON.parse(p);
@@ -24,62 +28,6 @@ const Home = props => {
     });
   }, []);
 
-  const handleChangeFilter = filter => {
-    getRecipies(filter);
-    setCurrFilter(filter);
-    setDinner([]);
-  };
-  useEffect(() => {
-    getFilters();
-    getRecipies();
-  }, []);
-
-  const getFilters = async () => {
-    let d = fetch('https://www.themealdb.com/api/json/v1/1/categories.php');
-    d.then(res => {
-      return res.json();
-    })
-      .then(res => {
-        if (res && res.categories) {
-          setFilters(res.categories);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  const getRecipies = async (category = 'Vegetarian') => {
-    let d = fetch(
-      `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`,
-    );
-    d.then(res => {
-      return res.json();
-    })
-      .then(res => {
-        if (res && res.meals) {
-          setDinner(res.meals);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  const getDataByName = async (t = 'p') => {
-    let d = fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${t}`);
-    d.then(res => {
-      return res.json();
-    })
-      .then(res => {
-        if (res.meals != null) {
-          setDinner(res.meals);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
   return (
     <View style={style.main}>
       <View style={style.HeaderView}>
@@ -95,39 +43,37 @@ const Home = props => {
         </TouchableOpacity>
       </View>
 
-      <View style={style.searching}>
-        <Image style={style.img} source={require('../Images/search.png')} />
-        <TextInput
-          onChangeText={text => {
-            getDataByName(text);
-          }}
-          style={style.SearchInp}
-        />
-      </View>
       <View style={style.HeadingView}>
         <View style={style.logo}>
           <Text style={style.h1}>Todo App</Text>
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                props.navigation.navigate('Favourites');
-              }}>
-              <Image
-                style={style.logoImg}
-                source={require('../Images/diskette.png')}
-              />
-            </TouchableOpacity>
-            <Text
-              style={{fontWeight: '700', marginTop: 4, alignSelf: 'center'}}>
-              Saved
-            </Text>
-          </View>
         </View>
       </View>
-      <View style={style.filters}></View>
-      <View style={{paddingHorizontal: 30, marginTop: 20}}>
-        <Recipies meals={dinner} />
-      </View>
+      <ScrollView>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+            // backgroundColor: 'red',
+            paddingHorizontal: rw(12),
+            marginBottom: rh(14),
+          }}>
+          <Btn
+            onPress={() => navigation.navigate('AddTodo')}
+            title={'Add Todo'}
+            width="42%"
+            color={theme.textColor == 'white' ? 'black' : 'white'}
+            bgColor={theme.secondaryColor}
+          />
+          <Btn
+            onPress={() => navigation.navigate('AddTodo')}
+            title={'Completed Todo'}
+            width="42%"
+            color={theme.textColor == 'white' ? 'black' : 'white'}
+            bgColor={theme.secondaryColor}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -137,7 +83,7 @@ export default Home;
 const style = StyleSheet.create({
   main: {
     flex: 1,
-    marginTop: 40,
+    // marginTop: 40,
     backgroundColor: '#fff',
   },
   txt: {

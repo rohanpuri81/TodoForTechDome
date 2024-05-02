@@ -9,6 +9,8 @@ import SignUp from './Screens/SignUp';
 import Splash2 from './Screens/Splash2';
 import Favourites from './Screens/Favourites';
 import RecipeDetails from './Screens/RecipeDetails';
+import AddTodo from './Screens/AddTodo';
+import EditTodo from './Screens/EditTodo';
 
 import OnboardingCarousel from './Screens/Onboarding/OnboardingCarousel';
 const Stack = createNativeStackNavigator();
@@ -55,6 +57,16 @@ const AppNavigator = () => {
           options={{headerShown: false}}
           name="Favourites"
           component={Favourites}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="AddTodo"
+          component={AddTodo}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="EditTodo"
+          component={EditTodo}
         />
       </Stack.Navigator>
     </NavigationContainer>

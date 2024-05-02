@@ -1,14 +1,14 @@
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 
-const Btn = ({onPress, title, bgColor, color}) => {
+const Btn = ({onPress, title, bgColor, color, width = '85%'}) => {
   return (
     <TouchableOpacity
       style={{
         backgroundColor: bgColor,
         alignItems: 'center',
         justifyContent: 'center',
-        width: '85%',
+        width: width,
         height: 50,
         borderRadius: 10,
         alignSelf: 'center',

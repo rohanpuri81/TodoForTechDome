@@ -26,6 +26,14 @@ const SignUp = () => {
     email: '',
     password: '',
     cart: [],
+    currentTodo: [
+      {
+        title: 'Dance',
+        desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
+        expiry: '2024-05-31T02:13:00.000Z',
+      },
+    ],
+    completedTodo: [],
   });
 
   const check = () => {
