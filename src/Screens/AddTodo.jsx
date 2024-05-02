@@ -5,6 +5,7 @@ import Btn from '../components/Btn';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {useRoute} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddTodo = () => {
@@ -38,6 +39,13 @@ const AddTodo = () => {
           setTitle('');
           setDescription('');
           AsyncStorage.setItem('users', JSON.stringify(users));
+          Toast.show({
+            type: 'success',
+            text1:
+              languageRedux == 'ENGLISH'
+                ? 'Todo updated successfully!'
+                : 'Todo सफलतापूर्वक जोड़ा गया!',
+          });
           setTimeout(() => {
             navigation.navigate('Home', {isRefresh: Math.random()});
           }, 1800);

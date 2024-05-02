@@ -54,7 +54,10 @@ const EditTodo = () => {
               console.log('Todo updated successfully!');
               Toast.show({
                 type: 'success',
-                text1: 'Todo updated successfully!',
+                text1:
+                  languageRedux == 'ENGLISH'
+                    ? 'Todo updated successfully!'
+                    : 'Todo सफलतापूर्वक अपडेट किया गया!',
               });
               setTimeout(() => {
                 navigation.navigate('Home', {EditRefresh: Math.random()});

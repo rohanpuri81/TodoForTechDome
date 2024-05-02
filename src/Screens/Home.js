@@ -257,7 +257,7 @@ const Home = props => {
                 <Text style={[style.h2, {color: theme.textColor}]}>
                   {ele?.desc}
                 </Text>
-                <Text>
+                <Text style={{color: theme.textColor}}>
                   {languageRedux == 'ENGLISH' ? 'Expiry' : 'समाप्ति'} :{' '}
                   {ele?.expiry}
                 </Text>

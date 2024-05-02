@@ -6,9 +6,7 @@ import Splash from './Screens/Splash';
 import Login from './Screens/Login';
 import Home from './Screens/Home';
 import SignUp from './Screens/SignUp';
-import Splash2 from './Screens/Splash2';
-import Favourites from './Screens/Favourites';
-import RecipeDetails from './Screens/RecipeDetails';
+
 import AddTodo from './Screens/AddTodo';
 import EditTodo from './Screens/EditTodo';
 
@@ -28,11 +26,7 @@ const AppNavigator = () => {
           name="Onboarding"
           component={OnboardingCarousel}
         />
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="Splash2"
-          component={Splash2}
-        />
+
         <Stack.Screen
           options={{headerShown: false}}
           name="Login"
@@ -48,16 +42,7 @@ const AppNavigator = () => {
           name="Home"
           component={Home}
         />
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="RecipeDetails"
-          component={RecipeDetails}
-        />
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="Favourites"
-          component={Favourites}
-        />
+
         <Stack.Screen
           options={{headerShown: true}}
           name="AddTodo"
