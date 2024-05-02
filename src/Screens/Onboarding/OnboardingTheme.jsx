@@ -18,6 +18,8 @@ import {
 import {StackActions} from '@react-navigation/native';
 import {setThemeToDark, setThemeToLight} from '../../redux/ThemeSlice';
 
+// OnboardingTheme component
+
 const OnboardingTheme = ({handleNextPress}) => {
   const colorScheme = Appearance.getColorScheme();
   const navigation = useNavigation();
@@ -26,7 +28,10 @@ const OnboardingTheme = ({handleNextPress}) => {
   const [themeActiveBtn, setThemeActiveBtn] = useState('LIGHT');
   const languageRedux = useSelector(state => state.language.language);
   const fontStyle = useSelector(state => state.fontStyle);
+
+  // Texts and styles for the component
   const LangText = {
+    // Language-specific text
     fontFamily:
       languageRedux == 'ENGLISH'
         ? 'NotoSans-Medium'
@@ -54,6 +59,8 @@ const OnboardingTheme = ({handleNextPress}) => {
     paddingTop: Platform.OS == 'ios' ? 2 : 4,
   };
   const tgBg = colorScheme == 'light' ? '#F9F9F9' : '#172B42';
+
+  // Appearance for auto toggle button
   const AutoButtonAppearance = {
     bgColor: colorScheme == 'light' ? '#F9F9F9' : '#172B42',
     textColor: colorScheme == 'light' ? '#172B42' : '#F9F9F9',
@@ -79,10 +86,7 @@ const OnboardingTheme = ({handleNextPress}) => {
         backgroundColor="transparent"
         barStyle={theme.statusBarStyle}
       />
-      {/* <TopBar
-        heading={LangText.topBarHeading}
-        backLocation={ScreenConstants.PROFILE}
-      /> */}
+
       <View
         style={{
           paddingHorizontal: responsiveWidth(5.555),
@@ -118,6 +122,7 @@ const OnboardingTheme = ({handleNextPress}) => {
             : LangText.subHeadingDark}
         </Text>
         <View style={{gap: 22}}>
+          {/* Auto theme button */}
           <TouchableOpacity
             onPress={() => {
               dispatch(Auto.themeFunc());
@@ -171,6 +176,8 @@ const OnboardingTheme = ({handleNextPress}) => {
                 ]}></View>
             </View>
           </TouchableOpacity>
+
+          {/* Dark theme button */}
           <TouchableOpacity
             onPress={() => {
               dispatch(setThemeToDark());
@@ -202,6 +209,8 @@ const OnboardingTheme = ({handleNextPress}) => {
                 ]}></View>
             </View>
           </TouchableOpacity>
+
+          {/* Light theme button */}
           <TouchableOpacity
             onPress={() => {
               dispatch(setThemeToLight());
@@ -241,6 +250,7 @@ const OnboardingTheme = ({handleNextPress}) => {
 
 export default OnboardingTheme;
 
+// Styles
 const styles = StyleSheet.create({
   isSelect: {
     borderWidth: 1,

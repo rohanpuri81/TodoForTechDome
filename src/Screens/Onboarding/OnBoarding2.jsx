@@ -29,11 +29,11 @@ const Onboarding = ({handleNextPress}) => {
         backgroundColor="transparent"
         barStyle={theme.statusBarStyle}
       />
-
       <View
         style={{
           marginTop: rh(170),
         }}>
+        {/* Login button */}
         <Btn
           color={theme.textColor == 'white' ? 'black' : 'white'}
           bgColor={theme.secondaryColor}
@@ -42,6 +42,7 @@ const Onboarding = ({handleNextPress}) => {
             navigation.dispatch(StackActions.replace('Login'));
           }}
         />
+        {/* Sign Up button */}
         <Btn
           color={theme.textColor == 'white' ? 'black' : 'white'}
           bgColor={theme.secondaryColor}
@@ -57,6 +58,7 @@ const Onboarding = ({handleNextPress}) => {
 
 export default Onboarding;
 
+// Styles
 const Styles = StyleSheet.create({
   Header: {
     fontSize: responsiveHeight(3.5),

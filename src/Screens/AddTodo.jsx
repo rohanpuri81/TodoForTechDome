@@ -19,6 +19,7 @@ const AddTodo = () => {
   const languageRedux = useSelector(state => state.language.language);
   const navigation = useNavigation();
 
+  // Handles saving a new todo item to AsyncStorage.
   const AddTodo = () => {
     // Update AsyncStorage to persist the changes
     AsyncStorage.getItem('users')
@@ -55,6 +56,14 @@ const AddTodo = () => {
         console.error('Error completing todo: ', error);
       });
   };
+
+  /**
+   * Handles user-selected date change from the date picker.
+   *
+   * @param {Object} event - The date picker event object.
+   * @param {Date} selectedDate - The selected date from the date picker.
+   */
+
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || expiryDate;
     setShowDatePicker(Platform.OS === 'ios');
@@ -64,6 +73,8 @@ const AddTodo = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.primaryBgColor}]}>
+
+       {/* Input box for title */}
       <TextInput
         style={[styles.input, {color: theme.textColor}]}
         placeholder={languageRedux == 'ENGLISH' ? 'Title' : 'शीर्षक'}
@@ -71,6 +82,8 @@ const AddTodo = () => {
         value={title}
         onChangeText={text => setTitle(text)}
       />
+
+      {/* Input box for description */}
       <TextInput
         style={[styles.input, {color: theme.textColor}]}
         placeholder={languageRedux == 'ENGLISH' ? 'Description' : 'विवरण'}
@@ -78,6 +91,8 @@ const AddTodo = () => {
         value={description}
         onChangeText={text => setDescription(text)}
       />
+
+      {/* Date picker */}
       <View style={styles.dateContainer}>
         {showDatePicker && (
           <DateTimePicker

@@ -19,6 +19,8 @@ import {setLanguageToEnglish, setLanguageToHindi} from '../redux/LanguageSlice';
 import {rh, rw} from '../components/commonFunctions ';
 import {setThemeToDark, setThemeToLight} from '../redux/ThemeSlice';
 import {StackActions} from '@react-navigation/native';
+
+// Home component
 const Home = props => {
   const [name, setName] = useState('User');
   const route = useRoute();
@@ -37,6 +39,7 @@ const Home = props => {
     theme.theme === 'LIGHT' ? false : true,
   );
 
+  // Function to fetch users from AsyncStorage
   const getData = async () => {
     AsyncStorage.getItem('users')
       .then(res => {
@@ -57,17 +60,22 @@ const Home = props => {
       });
   };
 
+  // UseEffect to fetch data when isRefresh or EditRefresh changes from AddTodo and EditTodo
   useEffect(() => {
     isRefresh ? getData() : null;
   }, [isRefresh]);
   useEffect(() => {
     EditRefresh ? getData() : null;
   }, [EditRefresh]);
+
+  // Function to check if a todo item is expired
   const isExpired = expiryDate => {
     const now = new Date();
     const expiry = new Date(expiryDate);
     return now > expiry;
   };
+
+  // Function to delete a todo item
   const deleteTodo = index => {
     // Remove the todo item from the data array
     const updatedData = [...data];
@@ -88,6 +96,8 @@ const Home = props => {
         console.error('Error deleting todo: ', error);
       });
   };
+
+  // Function to mark a todo item as complete or incomplete
   const completeTodo = index => {
     // Update the isCompleted property of the todo item
     const updatedData = [...data];
@@ -123,6 +133,7 @@ const Home = props => {
 
   return (
     <SafeAreaView style={[style.main, {backgroundColor: theme.primaryBgColor}]}>
+      {/* Language and Theme toggle */}
       <View
         style={{
           flexDirection: 'row',
@@ -212,12 +223,14 @@ const Home = props => {
       </View>
 
       <View style={style.HeadingView}>
+        {/*Homepage Heading */}
         <View style={style.logo}>
           <Text style={[style.h1, {color: theme.textColor}]}>Todo App</Text>
         </View>
       </View>
       <ScrollView>
         <View style={{marginBottom: 18}}>
+          {/* Button to add new todo */}
           <Btn
             onPress={() =>
               navigation.navigate('AddTodo', {userEmail: userEmail})
@@ -229,6 +242,7 @@ const Home = props => {
           />
         </View>
 
+        {/* Todo List */}
         <ScrollView>
           {data?.map((ele, i) => {
             const expired = isExpired(ele.expiry);

@@ -8,6 +8,17 @@ import {
 } from 'react-native';
 import {useSelector} from 'react-redux';
 
+/**
+ * A reusable text input component for Todo for Techdome assesment round application By Rohan Puri.
+ *
+ * @param {string} value - The current value of the text input.
+ * @param {Function} onChangeText - The function to be called when the text input value changes.
+ * @param {string} placeholder - The placeholder text to display when the input is empty.
+ * @param {string} icon - The path or URL to an icon image to display before the input field.
+ * @param {string} type - The type of input field (e.g., 'text', 'password').
+ * @returns {JSX.Element} A React component representing the text input field.
+ */
+
 const TxtInp = ({value, onChangeText, placeholder, icon, type}) => {
   const [showPassword, setShowPassword] = useState(false);
   const theme = useSelector(state => state.theme);

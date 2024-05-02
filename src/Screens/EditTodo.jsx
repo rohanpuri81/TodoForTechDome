@@ -16,6 +16,8 @@ const EditTodo = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const languageRedux = useSelector(state => state.language.language);
+
+  // Destructure todo details from route parameters
   const {tit, desc, index, expiry, isCompleted, userEmail} = route.params;
 
   // Set initial data
@@ -28,12 +30,19 @@ const EditTodo = () => {
     });
   }, []);
 
+  /**
+   * Handles user-selected date change from the date picker.
+   *
+   * @param {Object} event - The date picker event object.
+   * @param {Date} selectedDate - The selected date from the date picker.
+   */
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || data.expiry;
     setShowDatePicker(Platform.OS === 'ios');
     setData({...data, expiry: currentDate});
   };
 
+  // Saves the edited todo item to AsyncStorage.
   const saveTodo = () => {
     AsyncStorage.getItem('users')
       .then(res => {
@@ -75,18 +84,24 @@ const EditTodo = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.primaryBgColor}]}>
+
+      {/* Input box for title */}
       <TextInput
         style={[styles.input, {color: theme.textColor}]}
         placeholder={languageRedux == 'ENGLISH' ? 'Title' : 'शीर्षक'}
         value={data.title}
         onChangeText={text => setData({...data, title: text})}
       />
+
+      {/* Input box for description */}
       <TextInput
         style={[styles.input, {color: theme.textColor, height: rh(130)}]}
         placeholder={languageRedux == 'ENGLISH' ? 'Description' : 'विवरण'}
         value={data.desc}
         onChangeText={text => setData({...data, desc: text})}
       />
+
+      {/* Date picker */}
       <View style={styles.dateContainer}>
         {showDatePicker && (
           <DateTimePicker

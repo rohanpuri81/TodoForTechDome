@@ -67,18 +67,19 @@ const OnboardingCarousel = () => {
         ),
         borderColor: theme.textLayer1,
       }}>
-      {/* First Onboarding Language selection screen  .*/}
+      {/* First Onboarding screen With the logo .*/}
       <View>
         <SplashScreen handleNextPress={handleNextPress} />
       </View>
-      {/* First Onboarding Language selection screen  .*/}
+      {/*  Onboarding Language selection screen  .*/}
       <View>
         <Onboarding handleNextPress={handleNextPress} />
       </View>
-      {/* First Onboarding Theme selection screen  .*/}
+      {/*  Onboarding Theme selection screen  .*/}
       <View>
         <OnboardingTheme handleNextPress={handleNextPress} />
       </View>
+      {/*  Onboarding screen to redirect to login and signup page .*/}
       <View>
         <OnBoarding2 handleNextPress={handleNextPress} />
       </View>

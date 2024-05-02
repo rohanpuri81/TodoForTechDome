@@ -7,19 +7,20 @@ import {
 } from 'react-native-responsive-dimensions';
 import {useSelector, useDispatch} from 'react-redux';
 import {rh, rw} from '../../components/commonFunctions ';
-// import {ScreenConstants} from '../../Navigation/NavigationConstants';
 import {useNavigation} from '@react-navigation/native';
 import {StackActions} from '@react-navigation/native';
 import {useEffect} from 'react';
 
-// import {fetchUserDetails} from '../../redux/userSlice';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+// SplashScreen component
+
 const SplashScreen = ({handleNextPress}) => {
   const dispatch = useDispatch();
   const fontStyle = useSelector(state => state.fontStyle);
   const navigation = useNavigation();
   const theme = useSelector(state => state.theme);
   const languageRedux = useSelector(state => state.language.language);
+
+  // Texts and styles for the component
   const LangText = {
     fontFamily:
       languageRedux == 'ENGLISH'
@@ -83,6 +84,7 @@ const SplashScreen = ({handleNextPress}) => {
 
 export default SplashScreen;
 
+// Styles
 const styles = StyleSheet.create({
   Img: {
     width: rw(160),
