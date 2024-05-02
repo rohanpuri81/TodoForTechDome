@@ -17,10 +17,12 @@ import Toast from 'react-native-toast-message';
 import {rw, rh} from '../components/commonFunctions ';
 
 const SignUp = () => {
+  // Hooks
   const navigation = useNavigation();
   const theme = useSelector(state => state.theme);
   const languageRedux = useSelector(state => state.language.language);
 
+  // State
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -55,6 +57,7 @@ const SignUp = () => {
     completedTodo: [],
   });
 
+  // Function to check user input and register
   const check = () => {
     let {email, name, password} = user;
     if (email !== '' && password !== '' && name !== '') {
@@ -104,6 +107,7 @@ const SignUp = () => {
     }
   };
 
+  // Function to save user data
   const saveData = async () => {
     AsyncStorage.getItem('users').then(p => {
       if (p == null) {
@@ -127,6 +131,8 @@ const SignUp = () => {
       <Text style={{...style.txt, color: theme.textColor}}>
         {languageRedux == 'ENGLISH' ? 'Sign Up' : 'साइन अप'}
       </Text>
+
+      {/* Input for Name */}
       <TxtInp
         placeholder={
           languageRedux == 'ENGLISH' ? 'Enter Your Name' : 'अपना नाम दर्ज करें'
@@ -140,6 +146,8 @@ const SignUp = () => {
         inputTextColor={theme.textColor}
         borderColor={theme.textColor}
       />
+
+      {/* Input for Email */}
       <TxtInp
         placeholder={
           languageRedux == 'ENGLISH'
@@ -155,6 +163,8 @@ const SignUp = () => {
         inputTextColor={theme.textColor}
         borderColor={theme.textColor}
       />
+
+      {/* Input for Password */}
       <TxtInp
         type={''}
         placeholder={
@@ -172,6 +182,7 @@ const SignUp = () => {
         borderColor={theme.textColor}
       />
 
+      {/* button to register user */}
       <Btn
         color={theme.textColor}
         bgColor={theme.secondaryColor}
@@ -197,6 +208,8 @@ const SignUp = () => {
 
 export default SignUp;
 
+
+// styles
 const style = StyleSheet.create({
   Img: {
     width: rw(100),

@@ -15,6 +15,7 @@ import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import {rh, rw} from '../components/commonFunctions ';
 
+// Login Page
 const Login = props => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
@@ -24,6 +25,7 @@ const Login = props => {
   const languageRedux = useSelector(state => state.language.language);
   const fontStyle = useSelector(state => state.fontStyle);
 
+  // Function to validate and login user
   const check = () => {
     if (email !== '' && password !== '') {
       if (!email.includes('@') && !email.includes('.')) {
@@ -58,6 +60,7 @@ const Login = props => {
     }
   };
 
+  // Function to get user data from AsyncStorage and navigate to Home if credentials are valid
   const getDate = () => {
     AsyncStorage.getItem('users')
       .then(p => {
@@ -104,6 +107,8 @@ const Login = props => {
       <Text style={{...style.txt, color: theme.textColor}}>
         {languageRedux == 'ENGLISH' ? 'Login' : 'लॉग इन'}
       </Text>
+
+      {/* Input for Email */}
       <TxtInp
         placeholder={
           languageRedux == 'ENGLISH'
@@ -117,6 +122,8 @@ const Login = props => {
         inputTextColor={theme.textColor}
         borderColor={theme.textColor}
       />
+
+      {/* Input for Password */}
       <TxtInp
         type={'password'}
         placeholder={
@@ -132,6 +139,7 @@ const Login = props => {
         borderColor={theme.textColor}
       />
 
+      {/* Login button */}
       <Btn
         color={theme.textColor}
         bgColor={theme.secondaryColor}
@@ -154,6 +162,7 @@ const Login = props => {
 
 export default Login;
 
+// styles
 const style = StyleSheet.create({
   Img: {
     width: rw(100),

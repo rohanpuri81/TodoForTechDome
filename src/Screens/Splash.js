@@ -10,8 +10,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {StackActions} from '@react-navigation/native';
 
+
+// First main spalsh page
 const Splash = () => {
   const navigation = useNavigation();
+
+  // useEffect hook to handle navigation logic after a delay
   useEffect(() => {
     setTimeout(() => {
       AsyncStorage.getItem('loggedUser')
@@ -43,6 +47,8 @@ const Splash = () => {
 
 export default Splash;
 
+
+// styles
 const style = StyleSheet.create({
   open: {
     flex: 1,
