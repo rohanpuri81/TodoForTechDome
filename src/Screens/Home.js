@@ -128,28 +128,13 @@ const Home = props => {
         </View>
       </View>
       <ScrollView>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '100%',
-            // backgroundColor: 'red',
-            paddingHorizontal: rw(12),
-            marginBottom: rh(14),
-          }}>
+        <View style={{marginBottom: 18}}>
           <Btn
             onPress={() =>
               navigation.navigate('AddTodo', {userEmail: userEmail})
             }
             title={'Add Todo'}
-            width="42%"
-            color={theme.textColor == 'white' ? 'black' : 'white'}
-            bgColor={theme.secondaryColor}
-          />
-          <Btn
-            onPress={() => navigation.navigate('AddTodo')}
-            title={'Completed Todos'}
-            width="42%"
+            width="88%"
             color={theme.textColor == 'white' ? 'black' : 'white'}
             bgColor={theme.secondaryColor}
           />
@@ -188,7 +173,13 @@ const Home = props => {
                   }}>
                   <Btn
                     onPress={() => {
-                      navigation.navigate('EditTodo');
+                      navigation.navigate('EditTodo', {
+                        tit: ele?.title,
+                        expiry: ele?.expiry,
+                        desc: ele?.desc,
+                        index: i,
+                        isCompleted:ele?.isCompleted
+                      });
                     }}
                     title={'Edit'}
                     width="28%"

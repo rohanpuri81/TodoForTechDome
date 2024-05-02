@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Btn from '../components/Btn';
+import {useRoute} from '@react-navigation/native';
+
 import {useSelector} from 'react-redux';
 
 const EditTodo = () => {
@@ -11,18 +13,25 @@ const EditTodo = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const theme = useSelector(state => state.theme);
   const languageRedux = useSelector(state => state.language.language);
-
+  const route = useRoute();
+  const {tit, desc, index, expiry, isCompleted} = route.params;
   const saveTodo = () => {
-    // Implement save todo logic here
-    console.log('Title:', title);
-    console.log('Description:', description);
-    console.log('Expiry Date:', expiryDate);
+    console.log(tit, desc, index, expiry);
   };
+
+  const [data, setData] = useState({
+    title: tit,
+    desc: desc,
+    expiry: new Date(expiry),
+    isCompleted: isCompleted,
+  });
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || expiryDate;
     setShowDatePicker(Platform.OS === 'ios');
     setExpiryDate(currentDate);
+    setData({...data, expiry: currentDate});
+    console.log(data);
   };
 
   return (
@@ -30,19 +39,19 @@ const EditTodo = () => {
       <TextInput
         style={styles.input}
         placeholder="Title"
-        value={title}
-        onChangeText={text => setTitle(text)}
+        value={data?.title}
+        onChangeText={text => setData({...data, title: text})}
       />
       <TextInput
         style={styles.input}
         placeholder="Description"
-        value={description}
-        onChangeText={text => setDescription(text)}
+        value={data?.desc}
+        onChangeText={text => setData({...data, desc: text})}
       />
       <View style={styles.dateContainer}>
         {showDatePicker && (
           <DateTimePicker
-            value={expiryDate}
+            value={data?.expiry}
             mode="date"
             display="default"
             onChange={handleDateChange}
@@ -57,7 +66,7 @@ const EditTodo = () => {
         bgColor={theme.secondaryColor}
       />
       <Btn
-        onPress={() => saveTodo}
+        onPress={() => saveTodo()}
         title={'Save Todo'}
         // width="42%"
         color={theme.textColor == 'white' ? 'black' : 'white'}

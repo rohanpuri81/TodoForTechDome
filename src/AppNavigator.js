@@ -59,12 +59,12 @@ const AppNavigator = () => {
           component={Favourites}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{headerShown: true}}
           name="AddTodo"
           component={AddTodo}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{headerShown: true}}
           name="EditTodo"
           component={EditTodo}
         />
