@@ -17,7 +17,7 @@ import {useRoute} from '@react-navigation/native';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {setLanguageToEnglish, setLanguageToHindi} from '../redux/LanguageSlice';
 import {rh, rw} from '../components/commonFunctions ';
-
+import {setThemeToDark, setThemeToLight} from '../redux/ThemeSlice';
 const Home = props => {
   const [name, setName] = useState('User');
   const route = useRoute();
@@ -30,6 +30,7 @@ const Home = props => {
   const theme = useSelector(state => state.theme);
   const languageRedux = useSelector(state => state.language.language);
   const [languageSwitch, setLanguageSwitch] = useState(false);
+  const [themeSwitch, setThemeSwitch] = useState(false);
 
   const getData = async () => {
     AsyncStorage.getItem('users')
@@ -116,7 +117,7 @@ const Home = props => {
   }, []);
 
   return (
-    <SafeAreaView style={style.main}>
+    <SafeAreaView style={[style.main, {backgroundColor: theme.primaryBgColor}]}>
       <View
         style={{
           flexDirection: 'row',
@@ -131,7 +132,9 @@ const Home = props => {
             marginTop: rh(8),
             marginLeft: rw(12),
           }}>
-          <Text>{languageRedux == 'ENGLISH' ? 'EN' : 'अंग्रेज़ी'}</Text>
+          <Text style={{color: theme.textColor}}>
+            {languageRedux == 'ENGLISH' ? 'EN' : 'अंग्रेज़ी'}
+          </Text>
           <ToggleSwitch
             isOn={languageSwitch}
             onColor="green"
@@ -149,7 +152,9 @@ const Home = props => {
               console.log(languageRedux);
             }}
           />
-          <Text>{languageRedux == 'ENGLISH' ? 'HIN' : 'हिंदी'}</Text>
+          <Text style={{color: theme.textColor}}>
+            {languageRedux == 'ENGLISH' ? 'HIN' : 'हिंदी'}
+          </Text>
         </View>
         <View
           style={{
@@ -159,30 +164,34 @@ const Home = props => {
             marginTop: rh(8),
             marginLeft: rw(12),
           }}>
-          <Text>{languageRedux == 'ENGLISH' ? 'EN' : 'अंग्रेज़ी'}</Text>
+          <Text style={{color: theme.textColor}}>
+            {languageRedux == 'ENGLISH' ? 'Light' : 'रोशनी'}
+          </Text>
           <ToggleSwitch
-            isOn={languageSwitch}
+            isOn={themeSwitch}
             onColor="green"
             offColor="grey"
             label=""
             labelStyle={{color: 'black', fontWeight: '900'}}
             size="medium"
             onToggle={isOn => {
-              setLanguageSwitch(isOn);
+              setThemeSwitch(isOn);
               if (isOn == true) {
-                dispatch(setLanguageToHindi());
+                dispatch(setThemeToDark());
               } else {
-                dispatch(setLanguageToEnglish());
+                dispatch(setThemeToLight());
               }
-              console.log(languageRedux);
+              console.log(theme?.theme);
             }}
           />
-          <Text>{languageRedux == 'ENGLISH' ? 'HIN' : 'हिंदी'}</Text>
+          <Text style={{color: theme.textColor}}>
+            {languageRedux == 'ENGLISH' ? 'Dark' : 'अँधेरा'}
+          </Text>
         </View>
       </View>
 
       <View style={style.HeaderView}>
-        <Text style={style.txt}>
+        <Text style={[style.txt, {color: theme.textColor}]}>
           {languageRedux == 'ENGLISH' ? 'Hello' : 'नमस्ते'}, {name}
         </Text>
         <TouchableOpacity
@@ -198,7 +207,7 @@ const Home = props => {
 
       <View style={style.HeadingView}>
         <View style={style.logo}>
-          <Text style={style.h1}>Todo App</Text>
+          <Text style={[style.h1, {color: theme.textColor}]}>Todo App</Text>
         </View>
       </View>
       <ScrollView>
@@ -219,7 +228,10 @@ const Home = props => {
             const expired = isExpired(ele.expiry);
             return (
               <View
-                style={[style.todo, {borderColor: 'black', borderWidth: 2}]}>
+                style={[
+                  style.todo,
+                  {borderColor: theme.textColor, borderWidth: 2},
+                ]}>
                 <Text
                   style={[
                     style.h1,

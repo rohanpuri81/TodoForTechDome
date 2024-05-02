@@ -7,6 +7,7 @@ import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import {rh} from '../components/commonFunctions ';
 
 const EditTodo = () => {
   const [data, setData] = useState({});
@@ -70,15 +71,15 @@ const EditTodo = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.primaryBgColor}]}>
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.textColor}]}
         placeholder={languageRedux == 'ENGLISH' ? 'Title' : 'शीर्षक'}
         value={data.title}
         onChangeText={text => setData({...data, title: text})}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.textColor, height: rh(130)}]}
         placeholder={languageRedux == 'ENGLISH' ? 'Description' : 'विवरण'}
         value={data.desc}
         onChangeText={text => setData({...data, desc: text})}

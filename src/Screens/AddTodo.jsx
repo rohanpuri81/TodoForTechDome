@@ -55,16 +55,18 @@ const AddTodo = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.primaryBgColor}]}>
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.textColor}]}
         placeholder={languageRedux == 'ENGLISH' ? 'Title' : 'शीर्षक'}
+        placeholderTextColor={theme.textColor}
         value={title}
         onChangeText={text => setTitle(text)}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.textColor}]}
         placeholder={languageRedux == 'ENGLISH' ? 'Description' : 'विवरण'}
+        placeholderTextColor={theme.textColor}
         value={description}
         onChangeText={text => setDescription(text)}
       />

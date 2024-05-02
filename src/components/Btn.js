@@ -23,7 +23,7 @@ const Btn = ({
         marginTop: mt,
       }}
       onPress={() => onPress()}>
-      <Text style={{color: color}}>{title}</Text>
+      <Text style={{color: 'white'}}>{title}</Text>
     </TouchableOpacity>
   );
 };
