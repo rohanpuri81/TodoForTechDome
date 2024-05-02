@@ -18,6 +18,7 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import {setLanguageToEnglish, setLanguageToHindi} from '../redux/LanguageSlice';
 import {rh, rw} from '../components/commonFunctions ';
 import {setThemeToDark, setThemeToLight} from '../redux/ThemeSlice';
+import {StackActions} from '@react-navigation/native';
 const Home = props => {
   const [name, setName] = useState('User');
   const route = useRoute();
@@ -29,8 +30,12 @@ const Home = props => {
   const navigation = useNavigation();
   const theme = useSelector(state => state.theme);
   const languageRedux = useSelector(state => state.language.language);
-  const [languageSwitch, setLanguageSwitch] = useState(false);
-  const [themeSwitch, setThemeSwitch] = useState(false);
+  const [languageSwitch, setLanguageSwitch] = useState(
+    languageRedux === 'ENGLISH' ? false : true,
+  );
+  const [themeSwitch, setThemeSwitch] = useState(
+    theme.theme === 'LIGHT' ? false : true,
+  );
 
   const getData = async () => {
     AsyncStorage.getItem('users')
@@ -123,6 +128,7 @@ const Home = props => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingRight: rw(12),
+          marginTop: rh(29),
         }}>
         <View
           style={{
@@ -132,7 +138,7 @@ const Home = props => {
             marginTop: rh(8),
             marginLeft: rw(12),
           }}>
-          <Text style={{color: theme.textColor}}>
+          <Text style={{color: theme.textColor, width: rw(32)}}>
             {languageRedux == 'ENGLISH' ? 'EN' : 'अंग्रेज़ी'}
           </Text>
           <ToggleSwitch
@@ -198,7 +204,7 @@ const Home = props => {
           onPress={() => {
             let k = 'k';
             AsyncStorage.setItem('loggedUser', JSON.stringify(k)).then(() => {
-              props.navigation.navigate('Splash2');
+              navigation.dispatch(StackActions.replace('Onboarding'));
             });
           }}>
           <Image style={style.img} source={require('../Images/logout.png')} />
@@ -228,6 +234,7 @@ const Home = props => {
             const expired = isExpired(ele.expiry);
             return (
               <View
+                key={Math.random()}
                 style={[
                   style.todo,
                   {borderColor: theme.textColor, borderWidth: 2},
