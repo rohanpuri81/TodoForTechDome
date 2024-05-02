@@ -20,6 +20,7 @@ const Home = props => {
   const [name, setName] = useState('User');
   const route = useRoute();
   const isRefresh = route?.params?.isRefresh;
+  const EditRefresh = route?.params?.EditRefresh;
   const [userEmail, setUserEmail] = useState('User');
   const [data, setData] = useState([]);
   const navigation = useNavigation();
@@ -49,6 +50,9 @@ const Home = props => {
   useEffect(() => {
     isRefresh ? getData() : null;
   }, [isRefresh]);
+  useEffect(() => {
+    EditRefresh ? getData() : null;
+  }, [EditRefresh]);
   const isExpired = expiryDate => {
     const now = new Date();
     const expiry = new Date(expiryDate);
@@ -178,7 +182,8 @@ const Home = props => {
                         expiry: ele?.expiry,
                         desc: ele?.desc,
                         index: i,
-                        isCompleted:ele?.isCompleted
+                        isCompleted: ele?.isCompleted,
+                        userEmail: userEmail,
                       });
                     }}
                     title={'Edit'}

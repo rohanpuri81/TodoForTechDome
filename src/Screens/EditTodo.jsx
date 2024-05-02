@@ -1,37 +1,71 @@
-import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet, Platform} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, TextInput, StyleSheet, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Btn from '../components/Btn';
 import {useRoute} from '@react-navigation/native';
-
 import {useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const EditTodo = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [expiryDate, setExpiryDate] = useState(new Date());
+  const [data, setData] = useState({});
   const [showDatePicker, setShowDatePicker] = useState(false);
   const theme = useSelector(state => state.theme);
-  const languageRedux = useSelector(state => state.language.language);
+  const navigation = useNavigation();
   const route = useRoute();
-  const {tit, desc, index, expiry, isCompleted} = route.params;
-  const saveTodo = () => {
-    console.log(tit, desc, index, expiry);
-  };
+  const {tit, desc, index, expiry, isCompleted, userEmail} = route.params;
 
-  const [data, setData] = useState({
-    title: tit,
-    desc: desc,
-    expiry: new Date(expiry),
-    isCompleted: isCompleted,
-  });
+  // Set initial data
+  useEffect(() => {
+    setData({
+      title: tit,
+      desc: desc,
+      expiry: new Date(expiry),
+      isCompleted: isCompleted,
+    });
+  }, []);
 
   const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || expiryDate;
+    const currentDate = selectedDate || data.expiry;
     setShowDatePicker(Platform.OS === 'ios');
-    setExpiryDate(currentDate);
     setData({...data, expiry: currentDate});
-    console.log(data);
+  };
+
+  const saveTodo = () => {
+    AsyncStorage.getItem('users')
+      .then(res => {
+        const users = JSON.parse(res);
+        const loggedUser = users.find(user => user.email === userEmail);
+        if (loggedUser) {
+          // Find the todo item by index and update it
+          loggedUser.currentTodo[index] = {
+            title: data.title,
+            desc: data.desc,
+            expiry: data.expiry,
+            isCompleted: data.isCompleted,
+          };
+          // Update AsyncStorage with the modified user data
+          AsyncStorage.setItem('users', JSON.stringify(users))
+            .then(() => {
+              // Navigate back or perform any necessary actions
+              console.log('Todo updated successfully!');
+              Toast.show({
+                type: 'success',
+                text1: 'Todo updated successfully!',
+              });
+              setTimeout(() => {
+                navigation.navigate('Home', {EditRefresh: Math.random()});
+              }, 1400);
+            })
+            .catch(error => {
+              console.error('Error updating todo: ', error);
+            });
+        }
+      })
+      .catch(error => {
+        console.error('Error updating todo: ', error);
+      });
   };
 
   return (
@@ -39,19 +73,19 @@ const EditTodo = () => {
       <TextInput
         style={styles.input}
         placeholder="Title"
-        value={data?.title}
+        value={data.title}
         onChangeText={text => setData({...data, title: text})}
       />
       <TextInput
         style={styles.input}
         placeholder="Description"
-        value={data?.desc}
+        value={data.desc}
         onChangeText={text => setData({...data, desc: text})}
       />
       <View style={styles.dateContainer}>
         {showDatePicker && (
           <DateTimePicker
-            value={data?.expiry}
+            value={data.expiry}
             mode="date"
             display="default"
             onChange={handleDateChange}
@@ -68,7 +102,6 @@ const EditTodo = () => {
       <Btn
         onPress={() => saveTodo()}
         title={'Save Todo'}
-        // width="42%"
         color={theme.textColor == 'white' ? 'black' : 'white'}
         bgColor={theme.secondaryColor}
       />
