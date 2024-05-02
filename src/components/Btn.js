@@ -1,7 +1,15 @@
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 
-const Btn = ({onPress, title, bgColor, color, width = '85%'}) => {
+const Btn = ({
+  onPress,
+  title,
+  bgColor,
+  color,
+  width = '85%',
+  height = 50,
+  mt = 38,
+}) => {
   return (
     <TouchableOpacity
       style={{
@@ -9,10 +17,10 @@ const Btn = ({onPress, title, bgColor, color, width = '85%'}) => {
         alignItems: 'center',
         justifyContent: 'center',
         width: width,
-        height: 50,
+        height: height,
         borderRadius: 10,
         alignSelf: 'center',
-        marginTop: 38,
+        marginTop: mt,
       }}
       onPress={() => onPress()}>
       <Text style={{color: color}}>{title}</Text>

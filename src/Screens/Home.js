@@ -12,20 +12,99 @@ import Btn from '../components/Btn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {useRoute} from '@react-navigation/native';
+
 import {rh, rw} from '../components/commonFunctions ';
 
 const Home = props => {
   const [name, setName] = useState('User');
+  const route = useRoute();
+  const isRefresh = route?.params?.isRefresh;
+  const [userEmail, setUserEmail] = useState('User');
+  const [data, setData] = useState([]);
   const navigation = useNavigation();
   const theme = useSelector(state => state.theme);
   const languageRedux = useSelector(state => state.language.language);
+
+  const getData = async () => {
+    AsyncStorage.getItem('users')
+      .then(res => {
+        return JSON.parse(res);
+      })
+      .then(resM => {
+        AsyncStorage.getItem('loggedUser')
+          .then(ele => {
+            return JSON.parse(ele);
+          })
+          .then(res => {
+            let d = resM.filter(ele => {
+              return ele.email == res[0].email;
+            });
+            setData(d[0].currentTodo);
+            console.log(d[0].currentTodo);
+          });
+      });
+  };
+
+  useEffect(() => {
+    isRefresh ? getData() : null;
+  }, []);
+  const isExpired = expiryDate => {
+    const now = new Date();
+    const expiry = new Date(expiryDate);
+    return now > expiry;
+  };
+  const deleteTodo = index => {
+    // Remove the todo item from the data array
+    const updatedData = [...data];
+    updatedData.splice(index, 1);
+    setData(updatedData);
+
+    // Update AsyncStorage to persist the changes
+    AsyncStorage.getItem('users')
+      .then(res => {
+        const users = JSON.parse(res);
+        const loggedUser = users.find(user => user.email === userEmail);
+        if (loggedUser) {
+          loggedUser.currentTodo = updatedData;
+          AsyncStorage.setItem('users', JSON.stringify(users));
+        }
+      })
+      .catch(error => {
+        console.error('Error deleting todo: ', error);
+      });
+  };
+  const completeTodo = index => {
+    // Update the isCompleted property of the todo item
+    const updatedData = [...data];
+    updatedData[index].isCompleted = !updatedData[index].isCompleted;
+    setData(updatedData);
+
+    // Update AsyncStorage to persist the changes
+    AsyncStorage.getItem('users')
+      .then(res => {
+        const users = JSON.parse(res);
+        const loggedUser = users.find(user => user.email === userEmail);
+        if (loggedUser) {
+          loggedUser.currentTodo = updatedData;
+          AsyncStorage.setItem('users', JSON.stringify(users));
+        }
+      })
+      .catch(error => {
+        console.error('Error completing todo: ', error);
+      });
+  };
 
   useEffect(() => {
     AsyncStorage.getItem('loggedUser').then(p => {
       let user = JSON.parse(p);
       let n = user[0].name;
       setName(n);
+      setUserEmail(user[0].email);
     });
+    setTimeout(() => {
+      getData();
+    }, 1500);
   }, []);
 
   return (
@@ -59,7 +138,9 @@ const Home = props => {
             marginBottom: rh(14),
           }}>
           <Btn
-            onPress={() => navigation.navigate('AddTodo')}
+            onPress={() =>
+              navigation.navigate('AddTodo', {userEmail: userEmail})
+            }
             title={'Add Todo'}
             width="42%"
             color={theme.textColor == 'white' ? 'black' : 'white'}
@@ -67,12 +148,82 @@ const Home = props => {
           />
           <Btn
             onPress={() => navigation.navigate('AddTodo')}
-            title={'Completed Todo'}
+            title={'Completed Todos'}
             width="42%"
             color={theme.textColor == 'white' ? 'black' : 'white'}
             bgColor={theme.secondaryColor}
           />
         </View>
+
+        <ScrollView>
+          {data?.map((ele, i) => {
+            const expired = isExpired(ele.expiry);
+            return (
+              <View
+                style={[style.todo, {borderColor: 'black', borderWidth: 2}]}>
+                <Text
+                  style={[
+                    style.h1,
+                    {
+                      color: expired ? 'red' : theme.textColor,
+                      textDecorationLine: ele?.isCompleted
+                        ? 'line-through'
+                        : 'none',
+                    },
+                  ]}>
+                  {ele.title}
+                  {expired && (
+                    <Text style={{fontSize: 18}}> {'(Expired)'} </Text>
+                  )}
+                </Text>
+                <Text style={[style.h2, {color: theme.textColor}]}>
+                  {ele?.desc}
+                </Text>
+                <Text>Expiry : {ele?.expiry}</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Btn
+                    onPress={() => {
+                      navigation.navigate('EditTodo');
+                    }}
+                    title={'Edit'}
+                    width="28%"
+                    color={theme.textColor == 'white' ? 'black' : 'white'}
+                    bgColor={theme.secondaryColor}
+                    height={35}
+                    mt={10}
+                  />
+                  <Btn
+                    onPress={() => {
+                      deleteTodo(i);
+                    }}
+                    title={'Delete'}
+                    width="28%"
+                    color={theme.textColor == 'white' ? 'black' : 'white'}
+                    bgColor={theme.secondaryColor}
+                    height={35}
+                    mt={10}
+                  />
+                  <Btn
+                    onPress={() => {
+                      completeTodo(i);
+                    }}
+                    title={ele?.isCompleted ? 'UnComplete' : 'Complete'}
+                    width="28%"
+                    color={theme.textColor == 'white' ? 'black' : 'white'}
+                    bgColor={theme.secondaryColor}
+                    height={35}
+                    mt={10}
+                  />
+                </View>
+              </View>
+            );
+          })}
+        </ScrollView>
       </ScrollView>
     </View>
   );
@@ -81,9 +232,17 @@ const Home = props => {
 export default Home;
 
 const style = StyleSheet.create({
+  todo: {
+    width: '90%',
+    margin: 'auto',
+    paddingHorizontal: rw(12),
+    paddingVertical: rh(14),
+    gap: rh(6),
+    borderRadius: rh(8),
+    marginBottom: rh(18),
+  },
   main: {
     flex: 1,
-    // marginTop: 40,
     backgroundColor: '#fff',
   },
   txt: {
@@ -93,24 +252,25 @@ const style = StyleSheet.create({
     color: 'black',
   },
   HeaderView: {
-    height: 70,
+    marginTop: rh(30),
+    height: rh(70),
     width: '100%',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: rw(20),
     alignItems: 'center',
     flexDirection: 'row',
   },
   img: {
-    height: 40,
-    width: 40,
+    height: rh(40),
+    width: rh(40),
   },
   HeadingView: {
-    paddingHorizontal: 20,
-    marginTop: 14,
+    paddingHorizontal: rw(20),
+    marginTop: rh(14),
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     borderColor: 'lightgrey',
-    paddingBottom: 10,
+    paddingBottom: rh(10),
   },
   h2: {
     fontSize: 22,
@@ -125,31 +285,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   logoImg: {
-    height: 40,
-    width: 40,
-  },
-  searching: {
-    width: '100%',
-    paddingHorizontal: 20,
-    marginTop: 16,
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    paddingVertical: 10,
-    marginLeft: 10,
-    borderRadius: 10,
-    marginHorizontal: 20,
-  },
-  SearchInp: {
-    height: 30,
-    width: '90%',
-  },
-  filters: {
-    width: '100%',
-    marginHorizontal: 10,
-    marginTop: 20,
-    paddingHorizontal: 20,
+    height: rh(40),
+    width: rh(40),
   },
 });
