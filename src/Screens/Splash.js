@@ -10,13 +10,57 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {StackActions} from '@react-navigation/native';
 
-
 // First main spalsh page
 const Splash = () => {
   const navigation = useNavigation();
 
+  const saveTestUser = async () => {
+    AsyncStorage.getItem('users').then(p => {
+      if (p == null) {
+        AsyncStorage.setItem(
+          'users',
+          JSON.stringify([
+            {
+              name: 'Test User',
+              email: 'test@user.com',
+              password: '1234567',
+              currentTodo: [
+                {
+                  title: 'Dance1',
+                  desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
+                  expiry: '2024-05-31T02:13:00.000Z',
+                  isCompleted: false,
+                },
+                {
+                  title: 'Dance2',
+                  desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
+                  expiry: '2024-05-31T02:13:00.000Z',
+                  isCompleted: true,
+                },
+                {
+                  title: 'Dance3',
+                  desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
+                  expiry: '2022-05-31T02:13:00.000Z',
+                  isCompleted: false,
+                },
+                {
+                  title: 'Dance4',
+                  desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
+                  expiry: '2024-05-31T02:13:00.000Z',
+                  isCompleted: true,
+                },
+              ],
+            },
+          ]),
+        );
+      } else {
+        console.log('there are aready users');
+      }
+    });
+  };
   // useEffect hook to handle navigation logic after a delay
   useEffect(() => {
+    saveTestUser();
     setTimeout(() => {
       AsyncStorage.getItem('loggedUser')
         .then(res => {
@@ -29,7 +73,7 @@ const Splash = () => {
             navigation.dispatch(StackActions.replace('Onboarding'));
           }
         });
-    }, 3000);
+    }, 1700);
   }, []);
   return (
     <View style={style.open}>
@@ -46,7 +90,6 @@ const Splash = () => {
 };
 
 export default Splash;
-
 
 // styles
 const style = StyleSheet.create({

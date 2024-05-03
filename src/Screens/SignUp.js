@@ -27,34 +27,7 @@ const SignUp = () => {
     name: '',
     email: '',
     password: '',
-    cart: [],
-    currentTodo: [
-      {
-        title: 'Dance1',
-        desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
-        expiry: '2024-05-31T02:13:00.000Z',
-        isCompleted: false,
-      },
-      {
-        title: 'Dance2',
-        desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
-        expiry: '2024-05-31T02:13:00.000Z',
-        isCompleted: true,
-      },
-      {
-        title: 'Dance3',
-        desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
-        expiry: '2022-05-31T02:13:00.000Z',
-        isCompleted: false,
-      },
-      {
-        title: 'Dance4',
-        desc: 'akjhdsx ygadjhysd dshk az asiduhj asdhk sahd skuhd ksahd kashd',
-        expiry: '2024-05-31T02:13:00.000Z',
-        isCompleted: true,
-      },
-    ],
-    completedTodo: [],
+    currentTodo: [],
   });
 
   // Function to check user input and register
@@ -207,7 +180,6 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
 
 // styles
 const style = StyleSheet.create({

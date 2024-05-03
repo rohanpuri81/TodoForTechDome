@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  StatusBar,
+  ActivityIndicator,
   ScrollView,
   SafeAreaView,
 } from 'react-native';
@@ -32,6 +32,7 @@ const Home = props => {
   const navigation = useNavigation();
   const theme = useSelector(state => state.theme);
   const languageRedux = useSelector(state => state.language.language);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [languageSwitch, setLanguageSwitch] = useState(
     languageRedux === 'ENGLISH' ? false : true,
   );
@@ -56,6 +57,7 @@ const Home = props => {
             });
             setData(d[0].currentTodo);
             console.log(d[0].currentTodo);
+            setIsLoaded(true);
           });
       });
   };
@@ -242,98 +244,104 @@ const Home = props => {
           />
         </View>
 
-        {/* Todo List */}
-        <ScrollView>
-          {data?.map((ele, i) => {
-            const expired = isExpired(ele.expiry);
-            return (
-              <View
-                key={Math.random()}
-                style={[
-                  style.todo,
-                  {borderColor: theme.textColor, borderWidth: 2},
-                ]}>
-                <Text
-                  style={[
-                    style.h1,
-                    {
-                      color: expired ? 'red' : theme.textColor,
-                      textDecorationLine: ele?.isCompleted
-                        ? 'line-through'
-                        : 'none',
-                    },
-                  ]}>
-                  {ele.title}
-                  {expired && (
-                    <Text style={{fontSize: 18}}> {'(Expired)'} </Text>
-                  )}
-                </Text>
-                <Text style={[style.h2, {color: theme.textColor}]}>
-                  {ele?.desc}
-                </Text>
-                <Text style={{color: theme.textColor}}>
-                  {languageRedux == 'ENGLISH' ? 'Expiry' : 'समाप्ति'} :{' '}
-                  {ele?.expiry}
-                </Text>
+        {/* Todo List  here we are checking if the data is loaded then removing the Activityindicator and showing the data*/}
+        {isLoaded ? (
+          <ScrollView>
+            {data?.map((ele, i) => {
+              const expired = isExpired(ele.expiry);
+              return (
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Btn
-                    onPress={() => {
-                      navigation.navigate('EditTodo', {
-                        tit: ele?.title,
-                        expiry: ele?.expiry,
-                        desc: ele?.desc,
-                        index: i,
-                        isCompleted: ele?.isCompleted,
-                        userEmail: userEmail,
-                      });
-                    }}
-                    title={languageRedux == 'ENGLISH' ? 'Edit' : 'संपादित करें'}
-                    width="28%"
-                    color={theme.textColor == 'white' ? 'black' : 'white'}
-                    bgColor={theme.secondaryColor}
-                    height={35}
-                    mt={10}
-                  />
-                  <Btn
-                    onPress={() => {
-                      deleteTodo(i);
-                    }}
-                    title={languageRedux == 'ENGLISH' ? 'Delete' : 'हटाएं'}
-                    width="28%"
-                    color={theme.textColor == 'white' ? 'black' : 'white'}
-                    bgColor={theme.secondaryColor}
-                    height={35}
-                    mt={10}
-                  />
-                  <Btn
-                    onPress={() => {
-                      completeTodo(i);
-                    }}
-                    title={
-                      ele?.isCompleted
-                        ? languageRedux == 'ENGLISH'
-                          ? 'UnComplete'
-                          : 'अपूर्ण करें'
-                        : languageRedux == 'ENGLISH'
-                        ? 'Complete'
-                        : 'पूर्ण करें'
-                    }
-                    width="28%"
-                    color={theme.textColor == 'white' ? 'black' : 'white'}
-                    bgColor={theme.secondaryColor}
-                    height={35}
-                    mt={10}
-                  />
+                  key={Math.random()}
+                  style={[
+                    style.todo,
+                    {borderColor: theme.textColor, borderWidth: 2},
+                  ]}>
+                  <Text
+                    style={[
+                      style.h1,
+                      {
+                        color: expired ? 'red' : theme.textColor,
+                        textDecorationLine: ele?.isCompleted
+                          ? 'line-through'
+                          : 'none',
+                      },
+                    ]}>
+                    {ele.title}
+                    {expired && (
+                      <Text style={{fontSize: 18}}> {'(Expired)'} </Text>
+                    )}
+                  </Text>
+                  <Text style={[style.h2, {color: theme.textColor}]}>
+                    {ele?.desc}
+                  </Text>
+                  <Text style={{color: theme.textColor}}>
+                    {languageRedux == 'ENGLISH' ? 'Expiry' : 'समाप्ति'} :{' '}
+                    {ele?.expiry}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: '100%',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Btn
+                      onPress={() => {
+                        navigation.navigate('EditTodo', {
+                          tit: ele?.title,
+                          expiry: ele?.expiry,
+                          desc: ele?.desc,
+                          index: i,
+                          isCompleted: ele?.isCompleted,
+                          userEmail: userEmail,
+                        });
+                      }}
+                      title={
+                        languageRedux == 'ENGLISH' ? 'Edit' : 'संपादित करें'
+                      }
+                      width="28%"
+                      color={theme.textColor == 'white' ? 'black' : 'white'}
+                      bgColor={theme.secondaryColor}
+                      height={35}
+                      mt={10}
+                    />
+                    <Btn
+                      onPress={() => {
+                        deleteTodo(i);
+                      }}
+                      title={languageRedux == 'ENGLISH' ? 'Delete' : 'हटाएं'}
+                      width="28%"
+                      color={theme.textColor == 'white' ? 'black' : 'white'}
+                      bgColor={theme.secondaryColor}
+                      height={35}
+                      mt={10}
+                    />
+                    <Btn
+                      onPress={() => {
+                        completeTodo(i);
+                      }}
+                      title={
+                        ele?.isCompleted
+                          ? languageRedux == 'ENGLISH'
+                            ? 'UnComplete'
+                            : 'अपूर्ण करें'
+                          : languageRedux == 'ENGLISH'
+                          ? 'Complete'
+                          : 'पूर्ण करें'
+                      }
+                      width="28%"
+                      color={theme.textColor == 'white' ? 'black' : 'white'}
+                      bgColor={theme.secondaryColor}
+                      height={35}
+                      mt={10}
+                    />
+                  </View>
                 </View>
-              </View>
-            );
-          })}
-        </ScrollView>
+              );
+            })}
+          </ScrollView>
+        ) : (
+          <ActivityIndicator size={'large'} />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
