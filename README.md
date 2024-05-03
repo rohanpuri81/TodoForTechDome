@@ -13,6 +13,10 @@ This is a todo application built using React Native. It allows users to create, 
 - Switch between English and Hindi languages
 - Splash swiper containing of 4 pages
 
+## Download link
+
+- Apk download link ([DownloadLink](https://drive.google.com/file/d/1MsXcsSjBOUOHeTUbomXhVFd1nOUmCDd9/view?usp=drive_link))
+
 ## Test Credentials
 
 - Email - test@user.com
