@@ -1,49 +1,114 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Todo Application Created For TechDome
 
-# Getting Started
+## Description
 
-> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+This is a todo application built using React Native. It allows users to create, edit, and delete tasks, as well as toggle between light and dark themes and switch between English and Hindi languages.
 
-## Step 1: Start the Metro Server
+## Features
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- Create multiple accounts and maintain their Todo list data
+- Create, edit, and delete tasks
+- Toggle between light and dark themes
+- Auto theme option which will adapt accordingto phone's default theme
+- Switch between English and Hindi languages
+- Splash swiper containing of 4 pages
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Test Credentials
 
-```bash
-# using npm
-npm start
+- Email - test@user.com
+- Passwoerd - 1234567
 
-# OR using Yarn
-yarn start
-```
+## Requirements
 
-## Step 2: Start your Application
+- Node.js
+- React Native
+- Packages listed in `package.json`
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Installation
 
-### For Android
+1. Clone the repository:
 
-```bash
-# using npm
-npm run android
+   ```bash
+   git clone <repository_url>
 
-# OR using Yarn
-yarn android
-```
+   ```
 
-### For iOS
+2. Install dependencies:
 
-```bash
-# using npm
-npm run ios
+   ```bash
+   npm install
+   ```
 
-# OR using Yarn
-yarn ios
-```
+## Usage
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+1. Run the application:
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+   ```bash
+   npm start
+   ```
 
-your changes!
+## Configuration
+
+- Theme: To change the default theme (light/dark), modify the theme , With auto option , applivation will adapt the phoone's default theme.
+
+- Language: There is hindi and english lanuage support , Default language is English. (here i had to include only two languages , so i hame done it conditionally , but to include many languages , we should use separate JSON files with language data)
+
+## Technolgies used
+
+- React Native
+
+## Packages used
+
+- @react-native-async-storage/async-storage : AsyncStorage used to Maintain users data , and login as well as the todo's specific to users
+
+- @react-native-community/datetimepicker : datetimepicker is used to select the expiry date of a todo task
+
+- @react-navigation/native : This package is used to navigate between different pages
+
+- @react-navigation/native-stack : we have used a stack navigator to navigate between pages
+
+- @reduxjs/toolkit , react-redux : To manage state centrallay , and to implement the Language and Theme functionality , we have used the Redux
+
+- react-native-toast-message : As we had less time , so instead of cretaing own toggle button i have used this package
+
+- react-native-swiper : to create the Onboarding carousal , used this swiper package
+
+- react-native-svg : To use svg's
+
+- react-native-responsive-dimensions : to make the application responsive , used this package
+
+- react-native-safe-area-context , react-native-screens : installed with the navigation package
+
+## Folder Structure
+
+- `src/` : Contains the source code of the application.
+
+  - `components/` : Reusable UI components.
+  - `Images/` : contains the images used in the app
+  - `Redux/` : contains redux store and the slices
+  - `Screens/` : All the page / screens are stored here
+  - `AppNavigator.js`: file containing the stack navigation
+
+- `App.js`: Entry point of the application.
+
+Wait for few seconds images to download
+
+## First Splash screen page
+
+<center><img src="./screenshots/mj1.jpg" /></center>
+
+## Onboarding Carousal : Light Theme and English language
+
+<center><img src="./screenshots/join1.jpg" /></center>
+
+## Onboarding Carousal : Dark Theme and Hindi language
+
+<center><img src="./screenshots/join2.jpg" /></center>
+
+## Login and sign up page
+
+<center><img src="./screenshots/join3.jpg" /></center>
+
+## Home page , Add and Edit Tdod page
+
+<center><img src="./screenshots/join4.jpg" /></center>
