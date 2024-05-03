@@ -90,6 +90,7 @@ This is a todo application built using React Native. It allows users to create, 
   - `AppNavigator.js`: file containing the stack navigation
 
 - `App.js`: Entry point of the application.
+- `screenshots`: All application pages screenshots are saved here
 
 Wait for few seconds images to download
 
